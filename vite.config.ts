@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite-plus';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import fs from 'fs';
@@ -752,6 +752,9 @@ const codeSplittingGroups = [
 ];
 
 export default defineConfig({
+  staged: {
+    "*": "vp check --fix"
+  },
   root: __dirname,
   publicDir: 'static',
   base: isServeCommand ? '/' : '/public/',
@@ -840,8 +843,18 @@ export default defineConfig({
       transformIndexHtml: {
         order: 'pre',
         handler(html, ctx) {
-          if (!ctx.server) return html;
-          if (!process.env.REACT_SCAN) return html;
+          if (!ctx.server) return {
+            staged: {
+              "*": "vp check --fix"
+            },
+            ...html,
+          }
+          if (!process.env.REACT_SCAN) return {
+            staged: {
+              "*": "vp check --fix"
+            },
+            ...html,
+          }
           return html.replace(
             '<head>',
             `<head>\n    <script>window.__REACT_SCAN__ = { enabled: true, showToolbar: true };</script>` +
@@ -859,9 +872,12 @@ export default defineConfig({
       transform(code, id) {
         if (!id.endsWith('.cjs') || id.includes('node_modules')) return null;
         return {
+          staged: {
+            "*": "vp check --fix"
+          },
           code: `var module = { exports: {} }; var exports = module.exports;\n${code}\nexport default module.exports;\n`,
           map: null,
-        };
+        }
       },
     },
     react(),
@@ -900,7 +916,12 @@ export default defineConfig({
             if (r.ok) {
               const ct = r.headers.get('content-type') || '';
               if (ct.startsWith('image/') || ct.includes('icon'))
-                return { buf: Buffer.from(await r.arrayBuffer()), ct };
+                return {
+                  staged: {
+                    "*": "vp check --fix"
+                  },
+                  buf: Buffer.from(await r.arrayBuffer()), ct
+                }
             }
             return null;
           }

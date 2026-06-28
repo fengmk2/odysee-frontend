@@ -1,5 +1,5 @@
 /// <reference types="node" />
-/// <reference types="vite/client" />
+/// <reference types="vite-plus/client" />
 
 declare const IS_WEB: boolean;
 declare const __static: string;

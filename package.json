@@ -38,10 +38,10 @@
     "typecheck": "vp lint --type-aware --type-check",
     "typecheck:native": "vp lint --type-aware --type-check",
     "typecheck:tsc": "tsc --noEmit",
-    "prepare": "node scripts/setup-git-hooks.mjs",
+    "prepare": "vp config && node scripts/setup-git-hooks.mjs",
     "dev:web-server": "cross-env NODE_ENV=development node scripts/dev-web-server.mjs",
     "run:web-server": "cross-env NODE_ENV=production vp build && cd web && node index.js",
-    "postinstall": "cd web && pnpm install",
+    "postinstall2": "cd web && pnpm install",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
@@ -159,8 +159,8 @@
     "sass": "^1.54.0",
     "terser": "^5.46.1",
     "typescript": "^5.4.0",
-    "vite": "^8.0.1",
-    "vite-plus": "^0.1.12"
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
   },
   "resolutions": {},
   "browserslist": [
@@ -173,14 +173,5 @@
   "engines": {
     "node": ">=22.12.0"
   },
-  "packageManager": "pnpm@10.33.0",
-  "pnpm": {
-    "overrides": {
-      "react-is": "^18.3.1"
-    },
-    "onlyBuiltDependencies": [
-      "@firebase/util",
-      "protobufjs"
-    ]
-  }
+  "packageManager": "pnpm@10.33.0"
 }
